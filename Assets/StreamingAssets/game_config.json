@@ -1,0 +1,61 @@
+{
+  "cityWidth": 100,
+  "cityLength": 100,
+  "cellSize": 0.5,
+  "buildingTypes": [
+    {
+      "width": 1,
+      "length": 1,
+      "height": 1,
+      "power": 1
+    },
+    {
+      "width": 2,
+      "length": 1,
+      "height": 1,
+      "power": 2
+    },
+    {
+      "width": 1,
+      "length": 2,
+      "height": 1,
+      "power": 2
+    },
+    {
+      "width": 1,
+      "length": 1,
+      "height": 2,
+      "power": 2
+    },
+    {
+      "width": 3,
+      "length": 1,
+      "height": 1,
+      "power": 3
+    },
+    {
+      "width": 1,
+      "length": 3,
+      "height": 1,
+      "power": 3
+    },
+    {
+      "width": 1,
+      "length": 1,
+      "height": 3,
+      "power": 3
+    },
+    {
+      "width": 3,
+      "length": 2,
+      "height": 1,
+      "power": 6
+    },
+    {
+      "width": 2,
+      "length": 3,
+      "height": 1,
+      "power": 6
+    }
+  ]
+}
