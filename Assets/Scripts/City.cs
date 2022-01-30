@@ -7,7 +7,6 @@ public class City : MonoBehaviour
 {
     private readonly Dictionary<Vector2Int, Building> buildings = new Dictionary<Vector2Int, Building>();
 
-    [Inject] private DiContainer container;
     [Inject] private CityConfig config;
 
     [SerializeField] private GameObject gridPivot;
@@ -64,7 +63,7 @@ public class City : MonoBehaviour
                 Vector3 dragDelta = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;
                 if (Input.GetMouseButtonUp(0) && dragDelta.magnitude < 0.01f)
                 {
-                    GameObject newBuildingGameObject = container.InstantiatePrefab(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
+                    GameObject newBuildingGameObject = Instantiate(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
                     Building newBuilding = newBuildingGameObject.GetComponent<Building>();
                     newBuilding.Init(buildingGhost);
                     newBuilding.ShowGrid();

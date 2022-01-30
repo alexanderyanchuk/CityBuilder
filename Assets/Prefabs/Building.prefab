@@ -309,6 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7379149328722086492}
   - component: {fileID: 8618810853386832892}
+  - component: {fileID: 7153437799734454222}
   m_Layer: 0
   m_Name: Building
   m_TagString: Untagged
@@ -346,7 +347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e527a7f8cc1292041911737d23806447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 0
   cube: {fileID: 7379149327894775145}
   gridPivot: {fileID: 5323873440683286763}
   grid: {fileID: 909054254760379250}
@@ -354,6 +354,19 @@ MonoBehaviour:
   cubeMaterial: {fileID: 2100000, guid: 4f3c679b94e9ecb42a7b5884f6bde8fe, type: 2}
   cubeTransparentMaterial: {fileID: 2100000, guid: f0ec20132a0472c4c955096860c65d0d, type: 2}
   cubeBlockedMaterial: {fileID: 2100000, guid: 3ea0b7e20d46ebb4d9eeb9ff9c2b12f4, type: 2}
+--- !u!114 &7153437799734454222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7379149328722086493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 717a02054ef2699498e6bd4234fd7995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _containerSource: 0
 --- !u!1 &9159289940520874792
 GameObject:
   m_ObjectHideFlags: 0
