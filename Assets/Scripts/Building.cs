@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class Building : MonoBehaviour
 {
@@ -10,17 +11,19 @@ public class Building : MonoBehaviour
         Blocked,
     }
 
+    [Inject] private CityConfig config;
+
     [SerializeField] private GameObject cube;
     [SerializeField] private GameObject gridPivot;
     [SerializeField] private GameObject grid;
     [SerializeField] private TextMeshProUGUI powerText;
 
-    private Renderer cubeRenderer;
-    private Renderer gridRenderer;
-
     [SerializeField] private Material cubeMaterial;
     [SerializeField] private Material cubeTransparentMaterial;
     [SerializeField] private Material cubeBlockedMaterial;
+
+    private Renderer cubeRenderer;
+    private Renderer gridRenderer;
 
     public ushort width { get; private set; }
     public ushort length { get; private set; }
@@ -59,7 +62,7 @@ public class Building : MonoBehaviour
 
     private void UpdateCube()
     {
-        float cellSize = GameManager.instance.config.cellSize;
+        float cellSize = config.cellSize;
 
         cube.transform.localPosition = new Vector3(width * cellSize / 2, height * cellSize / 2, length * cellSize / 2);
         cube.transform.localScale = new Vector3(width * cellSize, height * cellSize, length * cellSize);
@@ -67,7 +70,7 @@ public class Building : MonoBehaviour
 
     private void UpdateGrid()
     {
-        float cellSize = GameManager.instance.config.cellSize;
+        float cellSize = config.cellSize;
 
         gridPivot.transform.localPosition = new Vector3(width * cellSize / 2, 0, length * cellSize / 2);
         gridPivot.transform.localScale = new Vector3((width + 2) * cellSize, 1, (length + 2) * cellSize);

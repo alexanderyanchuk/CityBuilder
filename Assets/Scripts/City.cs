@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 public class City : MonoBehaviour
 {
     private readonly Dictionary<Vector2Int, Building> buildings = new Dictionary<Vector2Int, Building>();
+
+    [Inject] private DiContainer container;
+    [Inject] private CityConfig config;
 
     [SerializeField] private GameObject gridPivot;
     [SerializeField] private GameObject grid;
@@ -50,7 +54,6 @@ public class City : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (gridCollider.Raycast(ray, out RaycastHit hit, 100.0f))
         {
-            CityConfig config = GameManager.instance.config;
             Vector2Int gridPosition = ConvertWorldToGridPosition(hit.point);
             buildingGhostGameObject.transform.localPosition = new Vector3(gridPosition.x * config.cellSize, 0, gridPosition.y * config.cellSize);
 
@@ -61,7 +64,7 @@ public class City : MonoBehaviour
                 Vector3 dragDelta = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;
                 if (Input.GetMouseButtonUp(0) && dragDelta.magnitude < 0.01f)
                 {
-                    GameObject newBuildingGameObject = Instantiate(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
+                    GameObject newBuildingGameObject = container.InstantiatePrefab(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
                     Building newBuilding = newBuildingGameObject.GetComponent<Building>();
                     newBuilding.Init(buildingGhost);
                     newBuilding.ShowGrid();
@@ -83,7 +86,6 @@ public class City : MonoBehaviour
 
     private bool CanBuildAt(RectInt newBuildingRect)
     {
-        CityConfig config = GameManager.instance.config;
         if (newBuildingRect.xMin <= 0 || newBuildingRect.yMin <= 0 || newBuildingRect.xMax >= config.cityWidth || newBuildingRect.yMax >= config.cityLength)
         {
             return false;
@@ -102,8 +104,6 @@ public class City : MonoBehaviour
 
     private void UpdateGrid()
     {
-        CityConfig config = GameManager.instance.config;
-
         ushort width = config.cityWidth;
         ushort length = config.cityLength;
         float cellSize = config.cellSize;
@@ -150,8 +150,6 @@ public class City : MonoBehaviour
 
     private Vector2Int ConvertWorldToGridPosition(Vector3 position)
     {
-        CityConfig config = GameManager.instance.config;
-
         float x = (position.x - transform.position.x) / config.cellSize;
         float y = (position.z - transform.position.z) / config.cellSize;
 
@@ -160,8 +158,6 @@ public class City : MonoBehaviour
 
     private BuildingConfig GetRandomBuildingType()
     {
-        CityConfig config = GameManager.instance.config;
-
         return config.buildingTypes[Random.Range(0, config.buildingTypes.Length)];
     }
 }
