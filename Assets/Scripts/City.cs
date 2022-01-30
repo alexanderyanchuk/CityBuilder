@@ -56,7 +56,7 @@ public class City : MonoBehaviour
 
             if (CanBuildAt(buildingGhost.GetGridRect(gridPosition)))
             {
-                buildingGhost.mode = Building.Mode.Transparent;
+                buildingGhost.SetMode(Building.Mode.Transparent);
 
                 Vector3 dragDelta = Camera.main.ScreenToViewportPoint(Input.mousePosition) - dragOrigin;
                 if (Input.GetMouseButtonUp(0) && dragDelta.magnitude < 0.01f)
@@ -64,8 +64,8 @@ public class City : MonoBehaviour
                     GameObject newBuildingGameObject = Instantiate(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
                     Building newBuilding = newBuildingGameObject.GetComponent<Building>();
                     newBuilding.Init(buildingGhost);
-                    newBuilding.showGrid = true;
-                    newBuilding.mode = Building.Mode.Normal;
+                    newBuilding.ShowGrid();
+                    newBuilding.SetMode(Building.Mode.Normal);
                     buildings.Add(gridPosition, newBuilding);
 
                     totalPower += newBuilding.power;
@@ -76,7 +76,7 @@ public class City : MonoBehaviour
             }
             else
             {
-                buildingGhost.mode = Building.Mode.Blocked;
+                buildingGhost.SetMode(Building.Mode.Blocked);
             }
         }
     }
@@ -126,12 +126,12 @@ public class City : MonoBehaviour
 
         BuildingConfig newBuildingType = GetRandomBuildingType();
         buildingGhost.Init(newBuildingType);
-        buildingGhost.mode = Building.Mode.Transparent;
+        buildingGhost.SetMode(Building.Mode.Transparent);
 
         foreach (Building building in buildings.Values)
         {
-            building.showGrid = true;
-            building.mode = Building.Mode.Transparent;
+            building.ShowGrid();
+            building.SetMode(Building.Mode.Transparent);
         }
     }
 
@@ -143,8 +143,8 @@ public class City : MonoBehaviour
 
         foreach (Building building in buildings.Values)
         {
-            building.showGrid = false;
-            building.mode = Building.Mode.Normal;
+            building.HideGrid();
+            building.SetMode(Building.Mode.Normal);
         }
     }
 
