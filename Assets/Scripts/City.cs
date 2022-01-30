@@ -54,8 +54,7 @@ public class City : MonoBehaviour
             Vector2Int gridPosition = ConvertWorldToGridPosition(hit.point);
             buildingGhostGameObject.transform.localPosition = new Vector3(gridPosition.x * config.cellSize, 0, gridPosition.y * config.cellSize);
 
-            Vector2Int extent = new Vector2Int(buildingGhost.width, buildingGhost.length);
-            if (CanBuildAt(gridPosition, extent))
+            if (CanBuildAt(buildingGhost.GetGridRect(gridPosition)))
             {
                 buildingGhost.mode = Building.Mode.Transparent;
 
@@ -64,10 +63,7 @@ public class City : MonoBehaviour
                 {
                     GameObject newBuildingGameObject = Instantiate(buildingPrefab, buildingGhostGameObject.transform.localPosition, buildingGhostGameObject.transform.rotation, transform);
                     Building newBuilding = newBuildingGameObject.GetComponent<Building>();
-                    newBuilding.width = buildingGhost.width;
-                    newBuilding.length = buildingGhost.length;
-                    newBuilding.height = buildingGhost.height;
-                    newBuilding.power = buildingGhost.power;
+                    newBuilding.Init(buildingGhost);
                     newBuilding.showGrid = true;
                     newBuilding.mode = Building.Mode.Normal;
                     buildings.Add(gridPosition, newBuilding);
@@ -85,23 +81,17 @@ public class City : MonoBehaviour
         }
     }
 
-    private bool CanBuildAt(Vector2Int newBuildingPosition, Vector2Int newBuildingSize)
+    private bool CanBuildAt(RectInt newBuildingRect)
     {
         CityConfig config = GameManager.instance.config;
-        if (newBuildingPosition.x <= 0 || newBuildingPosition.y <= 0 ||
-            newBuildingPosition.x + newBuildingSize.x >= config.cityWidth || newBuildingPosition.y + newBuildingSize.y >= config.cityLength)
+        if (newBuildingRect.xMin <= 0 || newBuildingRect.yMin <= 0 || newBuildingRect.xMax >= config.cityWidth || newBuildingRect.yMax >= config.cityLength)
         {
             return false;
         }
 
-        Vector2Int min = newBuildingPosition;
-        Vector2Int max = newBuildingPosition + newBuildingSize;
-
         foreach ((Vector2Int position, Building building) in buildings)
         {
-            Vector2Int buildingBoundsMin = new Vector2Int(position.x, position.y);
-            Vector2Int buildingBoundsMax = new Vector2Int(position.x + building.width, position.y + building.length);
-            if (min.x <= buildingBoundsMax.x && max.x >= buildingBoundsMin.x && min.y <= buildingBoundsMax.y && max.y >= buildingBoundsMin.y)
+            if (newBuildingRect.Overlaps(building.GetGridRect(position, margin: 1)))
             {
                 return false;
             }
@@ -135,10 +125,7 @@ public class City : MonoBehaviour
         buildingGhostGameObject.SetActive(true);
 
         BuildingConfig newBuildingType = GetRandomBuildingType();
-        buildingGhost.width = newBuildingType.width;
-        buildingGhost.length = newBuildingType.length;
-        buildingGhost.height = newBuildingType.height;
-        buildingGhost.power = newBuildingType.power;
+        buildingGhost.Init(newBuildingType);
         buildingGhost.mode = Building.Mode.Transparent;
 
         foreach (Building building in buildings.Values)

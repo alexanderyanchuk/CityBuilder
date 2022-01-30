@@ -117,6 +117,27 @@ public class Building : MonoBehaviour
         gridRenderer.material = Instantiate(gridRenderer.material);
     }
 
+    public void Init(BuildingConfig config)
+    {
+        width = config.width;
+        length = config.length;
+        height = config.height;
+        power = config.power;
+    }
+
+    public void Init(Building other)
+    {
+        width = other.width;
+        length = other.length;
+        height = other.height;
+        power = other.power;
+    }
+
+    public RectInt GetGridRect(Vector2Int position, int margin = 0)
+    {
+        return new RectInt(position.x - margin, position.y - margin, width + 2 * margin, length + 2 * margin);
+    }
+
     private void UpdateCube()
     {
         float cellSize = GameManager.instance.config.cellSize;
